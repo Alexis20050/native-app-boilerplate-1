@@ -1,0 +1,4 @@
+QMainWindow { background: #101419; }
+QMenuBar, QMenu, QStatusBar { color: #e8eaf6; background: #1b2330; }
+QLabel, QLineEdit, QComboBox, QTableWidget { color: #e8eaf6; }
+QPushButton { padding: 8px 12px; border-radius: 8px; }
