@@ -2,7 +2,6 @@ import sys
 from PyQt6.QtWidgets import QApplication
 from app.shell.main_window import MainWindow
 from app.features.items.view import build_items_view
-from app.features.songs.view import build_songs_view
 
 
 def main():
@@ -17,9 +16,6 @@ def main():
 
     win = MainWindow()
     win.add_feature("Items", build_items_view)
-    win.add_feature("Songs", build_songs_view)
-    win.open_tab("Items", build_items_view())
-    win.open_tab("Songs", build_songs_view())
     win.resize(900, 560)
     win.show()
 

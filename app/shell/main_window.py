@@ -1,24 +1,47 @@
-from PyQt6.QtWidgets import QMainWindow, QTabWidget
-from PyQt6.QtGui import QAction
+from PyQt6.QtWidgets import (
+    QLabel,
+    QMainWindow,
+    QWidget,
+    QHBoxLayout,
+    QListWidget,
+    QStackedWidget,
+    QListWidgetItem,
+)
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
-        super()._init__()
-        self.setWindowTitle("Notes")
+        super().__init__()
+        self.setWindowTitle("Notes with Sidebar")
 
-        self.tabs = QTabWidget()
-        self.setCentralWidget(self.tabs)
+        # Central container
+        container = QWidget()
+        layout = QHBoxLayout(container)
+        self.setCentralWidget(container)
 
-        self.menu = self.menuBar().addMenu("Features")
-        self.actions = {}
+        # Sidebar (list of features)
+        self.sidebar = QListWidget()
+        self.sidebar.setFixedWidth(200)
+        layout.addWidget(self.sidebar)
+
+        # Main area (stack of pages)
+        self.stack = QStackedWidget()
+        layout.addWidget(self.stack)
+
+        # Map feature names to widgets
+        self.features = {}
+
+        # Handle sidebar selection
+        self.sidebar.currentRowChanged.connect(self.stack.setCurrentIndex)
 
     def add_feature(self, name: str, factory):
-        act = QAction(name, self)
-        act.triggered.connect(lambda: self.open_tab(name, factory()))
-        self.menu.addAction(act)
-        self.actions[name] = act
+        # Create widget for feature
+        widget = factory()
+        self.features[name] = widget
 
-    def open_tab(self, title, widget):
-        idx = self.tabs.addTab(widget, title)
-        self.tabs.setCurrentIndex(idx)
+        # Add to sidebar
+        item = QListWidgetItem(name)
+        self.sidebar.addItem(item)
+
+        # Add to stacked widget
+        self.stack.addWidget(widget)
